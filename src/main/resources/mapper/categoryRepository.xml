@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.musinsa.api.common.mapper.CategoryMapper">
+
+    <select id="fetchLowestPriceSummaryByCategory" resultType="com.musinsa.api.goods.model.Goods">
+        SELECT
+            b.brand_name,
+            g.category_name,
+            g.price
+        FROM
+            goods g
+        JOIN
+            brand b ON g.brand_id = b.brand_id;
+    </select>
+
+
+    <select id="fetchGoodsPriceRangeForCategory" parameterType="string" resultType="com.musinsa.api.goods.model.Goods">
+        SELECT brandName,
+               price
+        FROM CATEGORY
+        where categoryName = #{categoryName}
+    </select>
+</mapper>
