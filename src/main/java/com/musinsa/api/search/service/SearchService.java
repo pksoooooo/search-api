@@ -47,9 +47,10 @@ public class SearchService {
         List<Goods> goods = searchMapper.fetchAllGoods();
 
         Map<String, List<Goods>> map = goods.stream()
-                .collect(Collectors.groupingBy(
-                        Goods::getBrandName
-                ));
+                .collect(Collectors.groupingBy(Goods::getBrandName))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().size() == CategoryInfo.values().length)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         Map<String, Integer> totalPrices = map.entrySet().stream()
                 .collect(Collectors.toMap(
