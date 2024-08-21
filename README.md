@@ -132,6 +132,7 @@
   'http://localhost:8080/api/search/category/price-range/TOP' \
   -H 'accept: */*'
 + Request URL : http://localhost:8080/api/search/category/price-range/TOP
++ Response body :
 ```
 {
   "code": 200,
