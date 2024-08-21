@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.musinsa.api.common.util.CommonUtil.getFormattedPrice;
-
 @Service
 public class SearchService {
 
@@ -46,35 +44,28 @@ public class SearchService {
 
     public Optional<GoodsLowestPriceResponseDto> fetchLowestTotalPriceByBrand() {
 
-            List<Goods> goods = searchMapper.fetchAllGoods();
+        List<Goods> goods = searchMapper.fetchAllGoods();
 
-            Map<String, List<Goods>> map = goods.stream()
-                    .collect(Collectors.groupingBy(
-                            Goods::getBrandName
-                    ));
+        Map<String, List<Goods>> map = goods.stream()
+                .collect(Collectors.groupingBy(
+                        Goods::getBrandName
+                ));
 
-            Map<String, Integer> totalPrices = map.entrySet().stream()
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            entry -> entry.getValue().stream().mapToInt(Goods::getPrice).sum()
-                    ));
+        Map<String, Integer> totalPrices = map.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream().mapToInt(Goods::getPrice).sum()
+                ));
 
-            String minPriceBrand = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getKey();
-            int amountPrice = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getValue();
+        String minPriceBrand = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getKey();
+        int amountPrice = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getValue();
 
-            GoodsLowestPriceByBrandResponseDto goodsLowestPriceByBrandResponseDto = GoodsLowestPriceByBrandResponseDto.builder()
-                    .brandName(minPriceBrand)
-                    .totalAmount(getFormattedPrice(amountPrice))
-                    .categoryInfo(commonConverter.convertGoodsToCategoryPriceDto(map.get(minPriceBrand)))
-                    .build();
+        GoodsLowestPriceByBrandResponseDto goodsLowestPriceByBrandResponseDto =
+                commonConverter.convertGoodsLowestPriceByBrandResponseDto(minPriceBrand, amountPrice, map);
 
-            GoodsLowestPriceResponseDto goodsLowestPriceResponseDto = GoodsLowestPriceResponseDto.builder()
-                    .minPrice(goodsLowestPriceByBrandResponseDto)
-                    .build();
+        return Optional.ofNullable(commonConverter.convertGoodsLowestPriceResponseDto(goodsLowestPriceByBrandResponseDto));
 
-            return Optional.ofNullable(goodsLowestPriceResponseDto);
-
-        }
+    }
 
     public Optional<GoodsPriceRangeResponseDto> getGoodsPriceRangeByCategory(String categoryName) {
         List<Goods> goodsList = searchMapper.fetchBrandGoodsByCategory(categoryName);

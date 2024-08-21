@@ -5,14 +5,12 @@ import com.musinsa.api.brand.model.Brand;
 import com.musinsa.api.common.model.CategoryInfo;
 import com.musinsa.api.goods.dto.response.GoodsResponseDto;
 import com.musinsa.api.goods.model.Goods;
-import com.musinsa.api.search.dto.response.BrandPriceResponseDto;
-import com.musinsa.api.search.dto.response.CategoryPriceResponseDto;
-import com.musinsa.api.search.dto.response.GoodsLowestPriceByCategoryResponseDto;
-import com.musinsa.api.search.dto.response.GoodsPriceResponseDto;
+import com.musinsa.api.search.dto.response.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.musinsa.api.common.util.CommonUtil.getFormattedPrice;
 
@@ -123,5 +121,19 @@ public class CommonConverter {
 
         return goodsResponseDto;
 
+    }
+
+    public GoodsLowestPriceByBrandResponseDto convertGoodsLowestPriceByBrandResponseDto(String minPriceBrand, int amountPrice, Map<String, List<Goods>> map) {
+        return GoodsLowestPriceByBrandResponseDto.builder()
+                .brandName(minPriceBrand)
+                .totalAmount(getFormattedPrice(amountPrice))
+                .categoryInfo(convertGoodsToCategoryPriceDto(map.get(minPriceBrand)))
+                .build();
+    }
+
+    public GoodsLowestPriceResponseDto convertGoodsLowestPriceResponseDto(GoodsLowestPriceByBrandResponseDto goodsLowestPriceByBrandResponseDto) {
+        return GoodsLowestPriceResponseDto.builder()
+                .minPrice(goodsLowestPriceByBrandResponseDto)
+                .build();
     }
 }
