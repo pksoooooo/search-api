@@ -156,27 +156,27 @@
 
 ### 구현 4) 브랜드 및 상품을 추가 / 업데이트 / 삭제하는 API
 + GOODS - GoodsController
-  + 모든 상품 조회
-    > GET /api/goods
-  + 상품 조회
-    > GET /api/goods/{id}
-  + 상품 등록
-    > POST /api/goods
-  + 상품 수정
-    > PUT /api/goods
-  + 상품 삭제
-    > DELETE /api/goods/{id}
+  + 모든 상품 조회 
+    - GET /api/goods
+  + 상품 조회 
+    - GET /api/goods/{id}
+  + 상품 등록 
+    - POST /api/goods
+  + 상품 수정 
+    - PUT /api/goods
+  + 상품 삭제 
+    - DELETE /api/goods/{id}
 
 + BRAND - BrandController
-  + 모든 브랜드 조회
-    > GET /api/brand
-  +  브랜드 id 조회
-    > GET /api/brand/id/{id}
-  +  브랜드 명 조회
-    > GET /api/brand/name/{name}
-  + 브랜드 등록
-    > POST /api/brand
-  + 브랜드 수정
-    > PUT /api/brand
-  + 브랜드 삭제
-    > DELETE /api/brand
+  + 모든 브랜드 조회 
+    - GET /api/brand
+  + 브랜드 id 조회 
+    - GET /api/brand/id/{id}
+  + 브랜드 명 조회 
+    - GET /api/brand/name/{name}
+  + 브랜드 등록 
+    - POST /api/brand
+  + 브랜드 수정 
+    - PUT /api/brand
+  + 브랜드 삭제 
+    - DELETE /api/brand
