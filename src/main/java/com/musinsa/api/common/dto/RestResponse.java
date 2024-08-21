@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestResponse<T> {
 
-    private Integer code;
-    private HttpStatus httpStatus;
+    private Integer code = HttpStatus.BAD_REQUEST.value();
+    private HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
     private String message;
     private T data;
 

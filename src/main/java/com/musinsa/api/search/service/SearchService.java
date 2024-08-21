@@ -68,7 +68,9 @@ public class SearchService {
                     .categoryInfo(commonConverter.convertGoodsToCategoryPriceDto(map.get(minPriceBrand)))
                     .build();
 
-            GoodsLowestPriceResponseDto goodsLowestPriceResponseDto = GoodsLowestPriceResponseDto.builder().minPrice(goodsLowestPriceByBrandResponseDto).build();
+            GoodsLowestPriceResponseDto goodsLowestPriceResponseDto = GoodsLowestPriceResponseDto.builder()
+                    .minPrice(goodsLowestPriceByBrandResponseDto)
+                    .build();
 
             return Optional.ofNullable(goodsLowestPriceResponseDto);
 
@@ -77,17 +79,22 @@ public class SearchService {
     public Optional<GoodsPriceRangeResponseDto> getGoodsPriceRangeByCategory(String categoryName) {
         List<Goods> goodsList = searchMapper.fetchBrandGoodsByCategory(categoryName);
 
-        Map<String, List<Goods>> minMaxPriceCategories = goodsList.stream()
+        Map<String, List<Goods>> minMaxPriceCategories = new HashMap<>();
+
+        Optional<Map.Entry<Integer, List<Goods>>> minEntry = goodsList.stream()
                 .collect(Collectors.groupingBy(Goods::getPrice))
-                .entrySet().stream()
-                .collect(Collectors.teeing(
-                        Collectors.minBy(Comparator.comparingInt(Map.Entry::getKey)),
-                        Collectors.maxBy(Comparator.comparingInt(Map.Entry::getKey)),
-                        (minEntry, maxEntry) -> Map.of(
-                                MAX, maxEntry.map(Map.Entry::getValue).orElseThrow(() -> new IllegalStateException("List is empty")),
-                                MIN, minEntry.map(Map.Entry::getValue).orElseThrow(() -> new IllegalStateException("List is empty"))
-                        )
-                ));
+                .entrySet()
+                .stream()
+                .min(Map.Entry.comparingByKey());
+
+        Optional<Map.Entry<Integer, List<Goods>>> maxEntry = goodsList.stream()
+                .collect(Collectors.groupingBy(Goods::getPrice))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByKey());
+
+        minEntry.ifPresent(entry -> minMaxPriceCategories.put(MIN, entry.getValue()));
+        maxEntry.ifPresent(entry -> minMaxPriceCategories.put(MAX, entry.getValue()));
 
         GoodsPriceRangeResponseDto goodsPriceRangeResponseDto = GoodsPriceRangeResponseDto.builder()
                 .categoryName(CategoryInfo.valueOf(categoryName).getCategoryName())

@@ -13,7 +13,7 @@ public interface GoodsMapper {
     List<Goods> fetchAllGoods();
     Goods fetchGoodsById(int goodsId);
     int saveGoods(GoodsSaveRequestDto goodsSaveRequestDto);
-    int updateGoods(GoodsUpdateRequestDto GoodsUpdateRequestDto);
+    int updateGoods(GoodsUpdateRequestDto goodsUpdateRequestDto);
     int deleteGoods(int goodsId);
 
 }

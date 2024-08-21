@@ -32,7 +32,7 @@ public class BrandService {
         try {
             getBrandById(brandUpdateRequestDto.getBrandId());
         } catch (NoSuchDataException e) {
-            throw new NoSuchDataException("수정하려는 데이터가 없습니다.");
+            throw new NoSuchDataException("수정 대상 데이터가 없습니다.");
         }
 
         return brandMapper.updateBrand(brandUpdateRequestDto) > 0;
@@ -43,7 +43,7 @@ public class BrandService {
         try {
             getBrandById(brandId);
         } catch (NoSuchDataException e) {
-            throw new NoSuchDataException("삭제하려는 데이터가 없습니다.");
+            throw new NoSuchDataException("삭제 대상 데이터가 없습니다.");
         }
 
         return brandMapper.deleteBrand(brandId) > 0;
@@ -55,7 +55,7 @@ public class BrandService {
 
     public BrandResponseDto getBrandById(int brandId) {
         Brand brand = Optional.ofNullable(brandMapper.fetchBrandById(brandId))
-                .orElseThrow(() -> new NoSuchDataException("조회하려는 브랜드가 없습니다."));
+                .orElseThrow(() -> new NoSuchDataException("조회 대상 브랜드가 없습니다."));
 
         return commonConverter.convertBrandToBrandResponseDto(brand);
     }
@@ -63,7 +63,7 @@ public class BrandService {
     public BrandResponseDto getBrandByName(String brandName) {
 
         Brand brand = Optional.ofNullable(brandMapper.fetchBrandByName(brandName))
-                .orElseThrow(() -> new NoSuchDataException("조회하려는 브랜드가 없습니다."));
+                .orElseThrow(() -> new NoSuchDataException("조회 대상 브랜드가 없습니다."));
 
         return commonConverter.convertBrandToBrandResponseDto(brand);
     }

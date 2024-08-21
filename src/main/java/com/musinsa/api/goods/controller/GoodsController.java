@@ -29,7 +29,7 @@ public class GoodsController {
     }
 
     @GetMapping
-    @Operation(summary = "모든 상품 조회 api", description = "모든 상품 조회 api")
+    @Operation(summary = "모든 상품 조회 api", description = "모든 상품 조회 값 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> getAllGoods() {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -39,7 +39,6 @@ public class GoodsController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message(HttpStatus.OK.getReasonPhrase())
                     .data(brandResponseDtoList)
                     .build();
         }
@@ -48,7 +47,7 @@ public class GoodsController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "상품 조회 api", description = "상품 조회 api")
+    @Operation(summary = "상품 id 조회 api", description = "상품 id 조회 값 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> getGoodsById(@PathVariable @Schema(description = "상품 id", example = "0") int id) {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -66,7 +65,7 @@ public class GoodsController {
     }
 
     @PostMapping
-    @Operation(summary = " 상품 등록 api", description = "상품 등록 api")
+    @Operation(summary = "상품 등록 api", description = "상품 등록 성공 유무 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> saveGoods(@Parameter @RequestBody GoodsSaveRequestDto goodsSaveRequestDto) {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -84,7 +83,7 @@ public class GoodsController {
     }
 
     @PutMapping
-    @Operation(summary = "상품 수정 api", description = "상품 수정 api")
+    @Operation(summary = "상품 수정 api", description = "상품 수정 성공 유무 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> updateGoods(@Parameter @RequestBody GoodsUpdateRequestDto goodsUpdateRequestDto) {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -102,7 +101,7 @@ public class GoodsController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "상품 삭제 api", description = "상품 삭제 api")
+    @Operation(summary = "상품 삭제 api", description = "상품 삭제 성공 유무 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> deleteGoods(
             @PathVariable @Schema(description = "상품 id", example = "0") int id
     ) {

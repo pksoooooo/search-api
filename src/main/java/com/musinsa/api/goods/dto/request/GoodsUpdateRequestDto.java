@@ -10,16 +10,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Schema(description = "상품 수정 요청 DTO")
+@Schema(description = "상품 수정 요청 dto")
 public class GoodsUpdateRequestDto {
 
-    @Schema(description = "상품 아이디", example = "0")
+    @Schema(description = "상품 id", example = "0")
     private int goodsId;
 
     @Schema(description = "카테고리", example = "TOP")
     private String categoryName;
 
-    @Schema(description = "브랜드 아이디", example = "0")
+    @Schema(description = "브랜드 id", example = "0")
     private int brandId;
 
     @Schema(description = "상품 가격", example = "10000")

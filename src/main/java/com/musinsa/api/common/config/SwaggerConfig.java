@@ -19,7 +19,7 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                 .title("Musinsa Api Swagger")
-                .description("CodeArena 유저 및 인증 , ps, 알림에 관한 REST API")
+                .description("무신사 과제 REST API")
                 .version("1.0.0");
     }
 }

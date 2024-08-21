@@ -29,7 +29,7 @@ public class BrandController {
     }
 
     @GetMapping
-    @Operation(summary = "모든 브랜드 조회 api", description = "모든 브랜드 조회 api")
+    @Operation(summary = "모든 브랜드 조회 api", description = "모든 브랜드 조회 값 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> getAllBrand() {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -48,7 +48,7 @@ public class BrandController {
     }
 
     @GetMapping("/id/{id}")
-    @Operation(summary = "브랜드 조회 api", description = "브랜드 조회 api")
+    @Operation(summary = "브랜드 id 조회 api", description = "브랜드 id 조회 값 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> getBrandById(@PathVariable @Schema(description = "브랜드 id", example = "1") int id) {
         RestResponse<Object> restResponse = new RestResponse<>();
 
@@ -66,8 +66,8 @@ public class BrandController {
     }
 
     @GetMapping("/name/{name}")
-    @Operation(summary = "브랜드 조회 api", description = "브랜드 조회 api")
-    public ResponseEntity<RestResponse<Object>> getBrandByName(@PathVariable @Schema(description = "brand name", example = "A") String name) {
+    @Operation(summary = "브랜드 명 조회 api", description = "브랜드 명 조회 값 JSON 리턴")
+    public ResponseEntity<RestResponse<Object>> getBrandByName(@PathVariable @Schema(description = "브랜드 명", example = "A") String name) {
         RestResponse<Object> restResponse = new RestResponse<>();
 
         Optional<BrandResponseDto> brandResponseDto = Optional.ofNullable(brandService.getBrandByName(name));

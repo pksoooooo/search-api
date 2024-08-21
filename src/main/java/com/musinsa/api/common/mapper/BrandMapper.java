@@ -11,15 +11,10 @@ import java.util.List;
 public interface BrandMapper {
 
     List<Brand> fetchAllBrand();
-
     Brand fetchBrandById(int brandId);
-
     Brand fetchBrandByName(String brandName);
-
     int saveBrand(BrandSaveRequestDto brandSaveRequestDto);
-
     int updateBrand(BrandUpdateRequestDto brandUpdateRequestDto);
-
     int deleteBrand(int brandId);
 
 }

@@ -31,18 +31,17 @@ public class GoodsService {
 
     public boolean saveGoods(GoodsSaveRequestDto goodsSaveRequestDto) {
 
-        Optional<CategoryInfo> status = Arrays.stream(CategoryInfo.values())
-                .filter(category -> category.name().equalsIgnoreCase(goodsSaveRequestDto.getCategoryName()))
-                .findFirst();
-        if (status.isEmpty()) {
-            throw new NoSuchDataException("카테고리가 등록 되어 있지 않습니다.");
-        }
+        checkCategoryValueFromEnum(goodsSaveRequestDto.getCategoryName());
 
-        if (goodsSaveRequestDto.getBrandId() > 0 && brandService.getBrandById(goodsSaveRequestDto.getBrandId()) == null) {
+        if (isNotValidBrandId(goodsSaveRequestDto.getBrandId())) {
             return false;
         }
 
         return goodsMapper.saveGoods(goodsSaveRequestDto) > 0;
+    }
+
+    private boolean isNotValidBrandId(int brandId) {
+        return brandId > 0 && brandService.getBrandById(brandId) == null;
     }
 
     public boolean updateGoods(GoodsUpdateRequestDto goodsUpdateRequestDto) {
@@ -53,16 +52,9 @@ public class GoodsService {
             throw new NoSuchDataException("수정하려는 상품이 없습니다.");
         }
 
-        if (StringUtils.isNotEmpty(goodsUpdateRequestDto.getCategoryName())) {
-            Optional<CategoryInfo> status = Arrays.stream(CategoryInfo.values())
-                    .filter(category -> category.name().equalsIgnoreCase(goodsUpdateRequestDto.getCategoryName()))
-                    .findFirst();
-            if (status.isEmpty()) {
-                throw new NoSuchDataException("카테고리가 등록 되어 있지 않습니다.");
-            }
-        }
+        checkCategoryValueFromEnum(goodsUpdateRequestDto.getCategoryName());
 
-        if (goodsUpdateRequestDto.getBrandId() > 0 && (brandService.getBrandById(goodsUpdateRequestDto.getBrandId()) == null)) {
+        if (isNotValidBrandId(goodsUpdateRequestDto.getBrandId())) {
             return false;
         }
 
@@ -82,12 +74,27 @@ public class GoodsService {
 
     public boolean deleteGoods(int goodsId) {
 
-            try {
-                getGoodsById(goodsId);
-            } catch (NoSuchDataException e) {
-                throw new NoSuchDataException("삭제하려는 데이터가 없습니다.");
+        try {
+            getGoodsById(goodsId);
+        } catch (NoSuchDataException e) {
+            throw new NoSuchDataException("삭제하려는 데이터가 없습니다.");
+        }
+
+        return goodsMapper.deleteGoods(goodsId) > 0;
+    }
+
+    private void checkCategoryValueFromEnum(String categoryName) {
+
+        if (StringUtils.isNotEmpty(categoryName)) {
+
+            Optional<CategoryInfo> categoryInfo = Arrays.stream(CategoryInfo.values())
+                    .filter(category -> category.name().equalsIgnoreCase(categoryName))
+                    .findFirst();
+
+            if (categoryInfo.isEmpty()) {
+                throw new NoSuchDataException("카테고리가 등록 되어 있지 않습니다.");
             }
 
-            return goodsMapper.deleteGoods(goodsId) > 0;
         }
+    }
 }

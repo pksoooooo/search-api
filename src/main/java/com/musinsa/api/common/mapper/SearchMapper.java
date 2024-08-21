@@ -9,7 +9,6 @@ import java.util.List;
 public interface SearchMapper {
 
     List<Goods> fetchAllGoods();
-
     List<Goods> fetchBrandGoodsByCategory(String categoryName);
 
 }

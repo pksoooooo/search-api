@@ -69,7 +69,7 @@ public class SearchController {
     @GetMapping("/category/price-range/{categoryName}")
     @Operation(summary = "category 명으로 brand 별 최저가 최고가 조회 api", description = "category 명으로 brand 별 최저가 최고가 정보를 JSON 리턴")
     public ResponseEntity<RestResponse<Object>> getPriceRangeByCategory(
-            @PathVariable @Schema(description = "카테고리명", example = "TOP") String categoryName
+            @PathVariable @Schema(description = "카테고리", example = "TOP") String categoryName
     ) {
 
         RestResponse<Object> restResponse = new RestResponse<>();
