@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.musinsa.api.common.mapper.GoodsMapper">
+
+    <select id="fetchAllGoods" resultType="com.musinsa.api.goods.model.Goods">
+        SELECT g.goods_id,
+               b.brand_id,
+               b.brand_name,
+               g.category_name,
+               g.price
+        FROM goods g
+                 JOIN
+             brand b ON g.brand_id = b.brand_id;
+    </select>
+
+    <select id="fetchGoodsById" resultType="com.musinsa.api.goods.model.Goods">
+        SELECT g.goods_id,
+               b.brand_id,
+               b.brand_name,
+               g.category_name,
+               g.price
+        FROM goods g
+        JOIN brand b ON g.brand_id = b.brand_id
+        WHERE goods_id = #{goodsId}
+    </select>
+
+    <insert id="saveGoods" parameterType="com.musinsa.api.goods.dto.request.GoodsSaveRequestDto">
+        INSERT INTO goods (brand_id, category_name, price)
+        VALUES (#{brandId}, #{categoryName}, #{price});
+    </insert>
+
+    <update id="updateGoods" parameterType="com.musinsa.api.goods.dto.request.GoodsUpdateRequestDto">
+        UPDATE goods
+        <set>
+            <if test="brandId != null and brandId > 0">
+                brand_id = #{brandId},
+            </if>
+            <if test="categoryName != null">
+                category_name = #{categoryName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        WHERE goods_id = #{goodsId}
+    </update>
+
+    <delete id="deleteGoods" parameterType="integer">
+        DELETE
+        FROM goods
+        WHERE goods_id = #{goodsId}
+    </delete>
+
+</mapper>

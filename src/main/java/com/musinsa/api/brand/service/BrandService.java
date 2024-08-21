@@ -1,89 +1,70 @@
 package com.musinsa.api.brand.service;
 
-import com.musinsa.api.brand.dto.request.BrandRequestDto;
-import com.musinsa.api.brand.dto.response.BrandResponseDto2;
+import com.musinsa.api.brand.dto.request.BrandSaveRequestDto;
+import com.musinsa.api.brand.dto.request.BrandUpdateRequestDto;
 import com.musinsa.api.brand.dto.response.BrandResponseDto;
-import com.musinsa.api.goods.dto.GoodsDto;
-import com.musinsa.api.goods.model.Goods;
-import com.musinsa.api.search.model.CategoryInfo;
+import com.musinsa.api.brand.model.Brand;
+import com.musinsa.api.common.convert.CommonConverter;
+import com.musinsa.api.common.exception.NoSuchDataException;
 import com.musinsa.api.common.mapper.BrandMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BrandService {
 
     private final BrandMapper brandMapper;
+    private final CommonConverter commonConverter;
 
-    public BrandService(BrandMapper brandMapper) {
+    public BrandService(BrandMapper brandMapper, CommonConverter commonConverter) {
         this.brandMapper = brandMapper;
+        this.commonConverter = commonConverter;
     }
 
-    public Optional<BrandResponseDto> fetchLowestTotalPriceByBrand() {
-
-        List<Goods> goods = brandMapper.fetchAllCategoryGoodsInfo();
-
-        //List를 brand명으로 그룹화 해서 map으로 변환
-        Map<String, List<Goods>> map = goods.stream()
-                .collect(Collectors.groupingBy(
-                        Goods::getBrandName
-                ));
-
-        //map value에서 price sum 구하기
-        Map<String, Integer> totalPrices = map.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream().mapToInt(Goods::getPrice).sum()
-                ));
-
-        //최소 브랜드와 최소 브랜드의 카테고리 총 합 구하기
-        String minPriceBrand = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getKey();
-        int amountPrice = Collections.min(totalPrices.entrySet(), Map.Entry.comparingByValue()).getValue();
-
-        //dto 담기
-        BrandResponseDto2 brandResponseDto2 = BrandResponseDto2.builder()
-                .brandName(minPriceBrand)
-                .totalAmount(amountPrice)
-                .categoryInfo(convertCategoryToDto(map.get(minPriceBrand)))
-                .build();
-
-        //최종 response에 담기
-        BrandResponseDto brandResponseDto = BrandResponseDto.builder().minPrice(brandResponseDto2).build();
-
-        return Optional.ofNullable(brandResponseDto);
-
+    public boolean saveBrand(BrandSaveRequestDto brandSaveRequestDto) {
+        return brandMapper.saveBrand(brandSaveRequestDto) > 0;
     }
 
-    private List<GoodsDto> convertCategoryToDto(List<Goods> goodsList) {
+    public boolean updateBrand(BrandUpdateRequestDto brandUpdateRequestDto) {
 
-        List<GoodsDto> goodsDtoList = new ArrayList<>();
+        try {
+            getBrandById(brandUpdateRequestDto.getBrandId());
+        } catch (NoSuchDataException e) {
+            throw new NoSuchDataException("수정하려는 데이터가 없습니다.");
+        }
 
-        goodsList.forEach(a -> goodsDtoList.add(GoodsDto.builder()
-                .categoryName(CategoryInfo.valueOf(a.getCategoryName().toUpperCase()).getCategoryName())
-                .brandName(a.getBrandName())
-                .price(a.getPrice())
-                .build())
-        );
-
-        return goodsDtoList;
-
+        return brandMapper.updateBrand(brandUpdateRequestDto) > 0;
     }
 
-    public boolean isGoodsRegistrable(BrandRequestDto brandRequestDto) {
-        return !brandMapper.findGoodsFromDB(brandRequestDto);
+    public boolean deleteBrand(int brandId) {
+
+        try {
+            getBrandById(brandId);
+        } catch (NoSuchDataException e) {
+            throw new NoSuchDataException("삭제하려는 데이터가 없습니다.");
+        }
+
+        return brandMapper.deleteBrand(brandId) > 0;
     }
 
-    public boolean saveGoods(BrandRequestDto brandRequestDto) {
-        return brandMapper.saveGoods(brandRequestDto) > 0;
+    public List<BrandResponseDto> getAllBrand() {
+        return commonConverter.convertBrandListToBrandListResponseDto(brandMapper.fetchAllBrand());
     }
 
-    public boolean updateGoods(BrandRequestDto brandRequestDto) {
-        return brandMapper.updateGoods(brandRequestDto) > 0;
+    public BrandResponseDto getBrandById(int brandId) {
+        Brand brand = Optional.ofNullable(brandMapper.fetchBrandById(brandId))
+                .orElseThrow(() -> new NoSuchDataException("조회하려는 브랜드가 없습니다."));
+
+        return commonConverter.convertBrandToBrandResponseDto(brand);
     }
 
-    public boolean deleteGoods(BrandRequestDto brandRequestDto) {
-        return brandMapper.deleteGoods(brandRequestDto) > 0;
+    public BrandResponseDto getBrandByName(String brandName) {
+
+        Brand brand = Optional.ofNullable(brandMapper.fetchBrandByName(brandName))
+                .orElseThrow(() -> new NoSuchDataException("조회하려는 브랜드가 없습니다."));
+
+        return commonConverter.convertBrandToBrandResponseDto(brand);
     }
 }

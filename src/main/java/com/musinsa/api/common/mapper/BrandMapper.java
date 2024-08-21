@@ -1,21 +1,25 @@
 package com.musinsa.api.common.mapper;
 
-import com.musinsa.api.brand.dto.request.BrandRequestDto;
-import com.musinsa.api.goods.model.Goods;
+import com.musinsa.api.brand.dto.request.BrandSaveRequestDto;
+import com.musinsa.api.brand.dto.request.BrandUpdateRequestDto;
+import com.musinsa.api.brand.model.Brand;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface BrandMapper {
-    List<Goods> fetchAllCategoryGoodsInfo();
 
+    List<Brand> fetchAllBrand();
 
-    boolean findGoodsFromDB(BrandRequestDto brandRequestDto);
+    Brand fetchBrandById(int brandId);
 
-    int saveGoods(BrandRequestDto brandRequestDto);
+    Brand fetchBrandByName(String brandName);
 
-    int updateGoods(BrandRequestDto brandRequestDto);
+    int saveBrand(BrandSaveRequestDto brandSaveRequestDto);
 
-    int deleteGoods(BrandRequestDto brandRequestDto);
+    int updateBrand(BrandUpdateRequestDto brandUpdateRequestDto);
+
+    int deleteBrand(int brandId);
+
 }

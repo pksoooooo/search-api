@@ -3,43 +3,38 @@
 
 <mapper namespace="com.musinsa.api.common.mapper.BrandMapper">
 
-    <insert id="saveGoods" parameterType="com.musinsa.api.brand.dto.request.BrandRequestDto">
-        INSERT INTO goods (brandName, categoryName, price)
-        VALUES (#{brandName}, #{categoryName}, #{price});
+    <select id="fetchAllBrand" resultType="com.musinsa.api.brand.model.Brand">
+        SELECT brand_id, brand_name
+        FROM brand;
+    </select>
+
+    <select id="fetchBrandById" resultType="com.musinsa.api.brand.model.Brand">
+        SELECT brand_id, brand_name
+        FROM brand
+        WHERE brand_id = #{brandId}
+    </select>
+
+    <select id="fetchBrandByName" resultType="com.musinsa.api.brand.model.Brand">
+        SELECT brand_id, brand_name
+        FROM brand
+        WHERE brand_name = #{brandName}
+    </select>
+
+    <insert id="saveBrand" parameterType="com.musinsa.api.brand.dto.request.BrandSaveRequestDto">
+        INSERT INTO brand (brand_name)
+        VALUES (#{brandName});
     </insert>
 
-    <!--    <insert id="saveGoods" parameterType="com.musinsa.api.common.dto.request.GoodsRequestDto">
-            INSERT INTO CATEGORY_TEST
-                (brand, top, outer, pants, sneakers, bag, hat, socks, accessory)
-            VALUES (#{brand}, #{top}, #{outer}, #{pants}, #{sneakers}, #{bag}, #{hat}, #{socks}, #{accessory})
-        </insert>-->
-
-    <update id="updateGoods" parameterType="com.musinsa.api.brand.dto.request.BrandRequestDto">
-        UPDATE goods
-        <set>
-            <if test="brandName != null">brandName=#{brandName},</if>
-            <if test="categoryName != null">categoryName=#{categoryName},</if>
-            <if test="price != null">price=#{price}</if>
-        </set>
-        WHERE brandName = #{brandName} AND categoryName = #{categoryName};
+    <update id="updateBrand" parameterType="com.musinsa.api.brand.dto.request.BrandUpdateRequestDto">
+        UPDATE brand
+        SET brand_name = #{brandName}
+        WHERE brand_id = #{brandId}
     </update>
-    <delete id="deleteGoods" parameterType="com.musinsa.api.brand.dto.request.BrandRequestDto">
+
+    <delete id="deleteBrand" parameterType="integer">
         DELETE
-        FROM goods
-        WHERE brandName = #{brandName}
-          AND categoryName = #{categoryName};
+        FROM brand
+        WHERE brand_id = #{brandId}
     </delete>
-
-    <select id="fetchAllCategoryGoodsInfo" resultType="com.musinsa.api.goods.model.Goods">
-        SELECT brandname, categoryname, price
-        FROM CATEGORY;
-    </select>
-
-    <select id="findGoodsFromDB" parameterType="com.musinsa.api.brand.dto.request.BrandRequestDto" resultType="java.lang.Boolean">
-        SELECT COUNT(*) > 0
-        FROM goods
-        WHERE brandName = #{brandName}
-          AND categoryName = #{categoryName};
-    </select>
 
 </mapper>

@@ -12,5 +12,6 @@ CREATE TABLE brand
 (
     brand_id   INTEGER      NOT NULL AUTO_INCREMENT,
     brand_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (brand_id)
+    PRIMARY KEY (brand_id),
+    CONSTRAINT uk_brand_name UNIQUE (brand_name)
 );

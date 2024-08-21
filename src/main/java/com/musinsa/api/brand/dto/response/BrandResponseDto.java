@@ -1,14 +1,15 @@
 package com.musinsa.api.brand.dto.response;
 
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
+@Schema(description = "브랜드 및 상품을 추가 요청 DTO")
 public class BrandResponseDto {
-    private BrandResponseDto2 minPrice;
+
+    private int brandId;
+    private String brandName;
+
 }

@@ -6,8 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface CategoryMapper {
-    List<Goods> fetchLowestPriceSummaryByCategory();
+public interface SearchMapper {
 
-    List<Goods> fetchGoodsPriceRangeForCategory(String categoryName);
+    List<Goods> fetchAllGoods();
+
+    List<Goods> fetchBrandGoodsByCategory(String categoryName);
+
 }

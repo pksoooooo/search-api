@@ -28,6 +28,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    implementation("org.apache.commons:commons-collections4:4.4")
+    implementation("org.apache.commons:commons-lang3:3.13.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -35,7 +37,7 @@ dependencies {
 
     annotationProcessor("org.projectlombok:lombok")
 
-    runtimeOnly("com.h2database:h2")
+    implementation("com.h2database:h2")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

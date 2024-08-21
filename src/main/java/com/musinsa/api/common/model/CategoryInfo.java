@@ -1,4 +1,4 @@
-package com.musinsa.api.search.model;
+package com.musinsa.api.common.model;
 
 import lombok.Getter;
 

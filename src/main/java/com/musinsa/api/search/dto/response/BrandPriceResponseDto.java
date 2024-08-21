@@ -1,6 +1,7 @@
-package com.musinsa.api.goods.dto;
+package com.musinsa.api.search.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GoodsDto {
+public class BrandPriceResponseDto {
 
+    @JsonProperty("브랜드")
     private String brandName;
-    private String categoryName;
-    private int price;
+    @JsonProperty("가격")
+    private String price;
 
 }
